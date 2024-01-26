@@ -106,8 +106,8 @@ class UserController extends Controller
     public function logout ()
     {
         auth()->user()->tokens()->delete();
-        // $cookie = Cookie::forget('cookie_token');
-        return response(['message' => 'Cerró Sesión'], Response::HTTP_OK);
+        $cookie = Cookie::forget('cookie_token');
+        return response(['message' => 'Cerró Sesión'], Response::HTTP_OK)->withCookie($cookie);
     }
 }
 
