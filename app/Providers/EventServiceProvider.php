@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\CommentCreated;
 use App\Events\UserVerified;
 use App\Events\Verified;
+use App\Listeners\NotifyCommentReceptor;
 use App\Listeners\SendVerificationNotification;
 use App\Listeners\SendWelcomeNotification;
 use Illuminate\Auth\Events\Registered;
@@ -25,6 +27,9 @@ class EventServiceProvider extends ServiceProvider
         UserVerified::class => [
             SendWelcomeNotification::class,
         ],
+        CommentCreated::class => [
+            NotifyCommentReceptor::class,
+        ]
     ];
 
     /**
@@ -34,7 +39,7 @@ class EventServiceProvider extends ServiceProvider
     {
         //
     }
-    
+
 
     /**
      * Determine if events and listeners should be automatically discovered.

@@ -16,11 +16,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
-//Route::post('/upload', [ImageController::class, 'upload'])->name('image.upload');
-Route::post('/register_user', [UserController::class,'register'])->name('user.register');
+// Route::get('/', function () {
+//     return view('welcome');
+// })->name('welcome');
+// Route::post('/upload', [ImageController::class, 'upload'])->name('image.upload');
+// Route::post('/register_user', [UserController::class,'register'])->name('user.register');
 
-Route::get('/email/verify/{id}/{hash}', [UserController::class, 'verify'])->name('verification.verify');
-Route::post('/login_user', [UserController::class,'login'])->name('user.login');
+// Route::get('/email/verify/{id}/{hash}', [UserController::class, 'verify'])->name('verification.verify');
+// Route::post('/login_user', [UserController::class,'login'])->name('user.login');

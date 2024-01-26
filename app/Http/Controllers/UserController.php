@@ -7,7 +7,7 @@ use App\Events\Verified;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response; 
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Cookie;
 
 class UserController extends Controller
@@ -33,7 +33,7 @@ class UserController extends Controller
         // auth()->login($new_user);
 
         // Redireccionar a la página de inicio o a donde desees después de registrar al usuario
-        return response()->json(['success' => true, 'message' => 'usuario creado exitosamente']);
+        return response()->json(['success' => true, 'message' => 'usuario creado exitosamente'], Response::HTTP_CREATED);
     }
 
     public function verify($id, $hash)
@@ -61,58 +61,6 @@ class UserController extends Controller
         return response()->json(['success'=>true, 'message'=>'Se ha verificado el email']);
     }
 
-    // public function login(Request $request)
-    // {
-    //     // Validación básica de datos
-    //     $request->validate([
-    //         'email' => 'required|email',
-    //         'password' => 'required',
-    //     ]);
-
-    //     // Intentar autenticar al usuario
-    //     $credentials = $request->only('email', 'password');
-
-    //     if (Auth::attempt($credentials)) {
-    //         // La autenticación ha sido exitosa
-
-    //         // Si deseas realizar alguna acción después del inicio de sesión, puedes hacerlo aquí
-
-    //         //return  redirect()->back()->with(['success' => 'Has iniciado sesion']); // Redirige a la página deseada después del inicio de sesión
-    //         return response()->json(['success' => true, 'message' => 'usuario logeado']);
-
-    //     } else {
-    //         // La autenticación ha fallado
-    //         return response()->json(['success' => false, 'message' => 'error']);
-    //         //return redirect()->back()->withInput()->withErrors(['error' => 'Credenciales incorrectas']);
-    //     }
-    // }
-    // public function login(Request $request)
-    // {
-    //     // Validación básica de datos
-    //     $request->validate([
-    //         'email' => 'required|email',
-    //         'password' => 'required',
-    //     ]);
-
-    //     // Intentar autenticar al usuario
-    //     $credentials = $request->only('email', 'password');
-
-    //     if (Auth::attempt($credentials)) {
-    //         // Obtener el usuario autenticado
-    //         $user = Auth::name();
-    //     // Obtener el número de notificaciones del usuario
-
-    //     // Retornar una respuesta JSON con éxito y el usuario
-    //     return response()->json([
-    //         'success' => true,
-    //         'user' => $user,
-    //     ]);
-
-    //     } else {
-    //         // La autenticación ha fallado
-    //         return response()->json(['success'=>false, 'message'=>'Credenciales invalidas']);
-    //     }
-    // }
     public function login(Request $request)
     {
         // Validación básica de datos
@@ -147,9 +95,8 @@ class UserController extends Controller
     public function userNotifications(Request $request){
         $notifications = auth()->user()->notifications;
         return response()->json(['notifications'=>$notifications],Response::HTTP_OK);
-
-        
     }
+
     public function getUser (Request $request){
         return response()->json([
             'message'=> "Obteniendo Usuario",
@@ -158,9 +105,9 @@ class UserController extends Controller
     }
     public function logout ()
     {
-        auth()->user()->tokens()->where('id', auth()->user()->currentAccessToken()->id)->delete();
-        $cookie = Cookie::forget('cookie_token');
-        return response(['message' => 'Cerró Sesión'], Response::HTTP_OK)->withCookie($cookie);
+        auth()->user()->tokens()->delete();
+        // $cookie = Cookie::forget('cookie_token');
+        return response(['message' => 'Cerró Sesión'], Response::HTTP_OK);
     }
 }
 

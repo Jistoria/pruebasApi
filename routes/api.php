@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImageController;
@@ -30,11 +31,15 @@ Route::get('/image/{filename}',[ImageController::class, 'viewImage'])->name('vie
 Route::delete('/images/{id}', [ImageController::class, 'deleteImage'])->name('delete.image');
 
 Route::post('/register_user', [UserController::class,'register'])->name('user.register');
-Route::post('/login_user', [UserController::class,'login'])->name('user.login');
+Route::post('/login_user', [UserController::class,'login'])->name('login');
 Route::get('/email/verify/{id}/{hash}', [UserController::class, 'verify'])->name('verification.verify');
 
 Route::group(['middleware'=>['auth:sanctum']],function(){
     Route::get('/get_notifications',[UserController::class,'userNotifications'])->name('user.notifications');
     Route::get('/get_user',[UserController::class, 'getUser']);
     Route::post('/logout',[UserController::class, 'logout']);
+    Route::post('/create_comment', [CommentController::class,'commentCreate']);
+
 });
+
+

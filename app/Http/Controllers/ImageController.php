@@ -6,6 +6,7 @@ use App\Models\Image;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
 
 class ImageController extends Controller
 {
@@ -24,8 +25,8 @@ class ImageController extends Controller
     $image->peso = $request->file('image')->getSize();
     $image->save();
 
-    return response()->json(['success' => true, 'message' => 'Imagen subida exitosamente.']);
-    
+    return response()->json(['success' => true, 'message' => 'Imagen subida exitosamente.'], Response::HTTP_OK);
+
 }
     public function getImage()
     {
@@ -33,18 +34,20 @@ class ImageController extends Controller
 
         return response()->json(['images'=>$images]);
     }
-    
-        public function viewImage($filename)
-    {
-        $path = storage_path('app/images/' . $filename);
 
+    public function viewImage($filename)
+    {
+
+        $path = asset('storage/images/' . $filename);
+// Ruta pública a través del enlace simbólico
+        return response(['hola'=>$path]);
         if (!file_exists($path)) {
             abort(404);
         }
 
         $file = file_get_contents($path);
 
-        return response($file, 200)->header('Content-Type', 'image/jpeg'); // Ajusta el tipo de contenido según el tipo de imagen que estés manejando
+        return response($file, 200)->header('Content-Type', 'image/jpeg');
     }
     public function deleteImage($id)
     {
