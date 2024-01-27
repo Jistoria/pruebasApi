@@ -23,6 +23,7 @@ class CommentController extends Controller
 
             $comment = Comment::create($request->all());
 
+
             // Verifica si el receptor existe
             if ($comment) {
                 event(new CommentCreated($comment));
